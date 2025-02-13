@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Listado de Artistas</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+				aria-controls="navbarTogglerDemo03" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand" href="#">CRUD Artistas</a>
+			<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link active"
+						th:href="@{/artistas}" aria-current="page">Control Artistas</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="row">
+			<h1>Lista de Artistas</h1>
+		</div>
+
+		<!-- Formulario de filtrado -->
+		<form method="get" action="/artistas">
+			<div class="row mb-3">
+				<div class="col">
+					<input type="number" name="albumesMayorQue" class="form-control"
+						placeholder="Álbumes mayor que">
+				</div>
+				<div class="col">
+					<input type="number" name="albumesMenorQue" class="form-control"
+						placeholder="Álbumes menor que">
+				</div>
+				<div class="col">
+					<input type="number" name="albumesIgualA" class="form-control"
+						placeholder="Álbumes igual a">
+				</div>
+				<div class="col">
+					<button type="submit" class="btn btn-primary">Filtrar</button>
+				</div>
+			</div>
+		</form>
+
+		<form id="deleteForm" th:action="@{/artistas/eliminar-multiples}"
+			method="post">
+			<div class="custom-right">
+				<div class="col-lg-3">
+					<a th:href="@{/artistas/nuevo}" class="btn btn-success ms-auto">Agregar
+						artista</a>
+					<style>
+.custom-right {
+	text-align: right;
+}
+</style>
+					<button type="button" class="btn btn-danger mt-3"
+						id="deleteSelectedButton">Eliminar seleccionados</button>
+				</div>
+			</div>
+			<table class="table table-striped table-bordered">
+				<thead class="table-light">
+					<tr>
+						<th>Seleccionar</th>
+						<th>ID</th>
+						<th>Nombre</th>
+						<th>Email</th>
+						<th>Albumes</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="artista : ${artistas}">
+						<td><input type="checkbox" name="artistasIds"
+							th:value="${artista.id}" /></td>
+						<td th:text="${artista.id}">ID</td>
+						<td th:text="${artista.nombre}">Nombre</td>
+						<td th:text="${artista.email}">Email</td>
+						<td th:text="${artista.albumes}">Álbumes</td>
+						<td><a th:href="@{/artistas/editar/{id}(id=${artista.id})}"
+							class="btn btn-info">Editar</a> <a
+							th:href="@{/artistas/eliminar/{id}(id=${artista.id})}"
+							class="btn btn-danger"
+							onclick="return confirm('¿Estás seguro de que deseas eliminar este artista?');">Eliminar</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFyM1b0w5g8H/3ztQOPPb1z7x5S2mppEMsH1Rljd9S7Pxk6TO7K7o0i5HZ"
+		crossorigin="anonymous"></script>
+	<script>
+		document
+				.getElementById("deleteSelectedButton")
+				.addEventListener(
+						"click",
+						function() {
+							const checkboxes = document
+									.querySelectorAll('input[name="artistasIds"]:checked');
+							if (checkboxes.length > 0) {
+								if (confirm('¿Estás seguro de que deseas eliminar los artistas seleccionados?')) {
+									document.getElementById("deleteForm")
+											.submit();
+								}
+							} else {
+								alert("Por favor, selecciona al menos un artista para eliminar.");
+							}
+						});
+	</script>
+</body>
+</html>
+
+
