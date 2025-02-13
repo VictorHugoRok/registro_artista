@@ -58,6 +58,13 @@
 						<br>
 						
 						<div class="form-group">
+    							<label>Edad:</label> <input type="number" name="edad" 
+								th:field="*{edad}" class="form-control"
+        							placeholder="Ingrese la edad :" required min="0" id="edad">
+						</div>
+						<br>
+						
+						<div class="form-group">
 							<label>Numero de albumes:</label> <input type="number" name="albumes"
 								th:field="*{albumes}" class="form-control"
 								placeholder="Ingrese sus albumes :" required>
